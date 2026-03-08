@@ -13,7 +13,7 @@ up, run checks, and submit changes.
 ```bash
 git clone https://github.com/SkinnnyJay/interview-prep.git
 cd interview-prep
-npm run install:all
+npm run install:all   # same as npm install; dependencies are hoisted to root
 npm run test:all
 npm run build:all
 ```
@@ -24,7 +24,7 @@ npm run build:all
 - **Test one project:** `npm run <project>:test` (e.g.
   `npm run rate-limiter:test`)
 - **Watch mode (TDD):** `npm run <project>:test:watch`
-- **Coverage:** `npm run <project>:test:coverage` or `npm run test:coverage`
+- **Coverage:** `npm run <project>:test:coverage` or `npm run test:coverage:all`
 - **Lint:** `npm run lint:all` or `npm run <project>:lint`
 - **Format:** `npm run format` or `npm run format:check`
 - **Build:** `npm run build:all` or `npm run <project>:build`
@@ -84,7 +84,7 @@ To publish a new version:
 1. Bump version in `package.json` (or run `npm version patch|minor|major`).
 2. Run `npm run test:all` and `npm run build:all`.
 3. `npm publish` (use `npm publish --access public` if the package is scoped,
-   e.g. `@username/api-patterns-sandbox`).
+   e.g. `@username/interview-patterns-sandbox`).
 
 Ensure no secrets or `.env` files are in the published bundle; `files` in
 `package.json` and `.npmignore` control what is included.

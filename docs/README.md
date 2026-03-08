@@ -21,6 +21,7 @@ Single-doc deep dives for each project and for shared algorithms: technical conc
 | [concurrency-parallel](concurrency-parallel.md) | [concurrency-parallel](../src/api/concurrency-parallel/README.md) | I/O vs CPU; limited concurrency; worker pool. |
 | [dependency-injection](dependency-injection.md) | [dependency-injection](../src/api/dependency-injection/README.md) | Singleton/scoped/transient; testing; circular deps. |
 | [api-scenarios](api-scenarios.md) | [api-scenarios](../src/api/api-scenarios/README.md) | Full API reference: CRUD, streaming, bulk, auth, OpenAPI. |
+| — | [nextjs-backend](../src/api/nextjs-backend/README.md) | Next.js API routes, Prisma, DI, CRUD; see project README. |
 
 ### Algorithms (src/algorithms)
 
@@ -30,3 +31,15 @@ Single-doc deep dives for each project and for shared algorithms: technical conc
 | [ranking-algorithms](ranking-algorithms.md) | [ranking-algorithms.ts](../src/algorithms/ranking-algorithms.ts) | TF-IDF, BM25, cosine; custom/phrase/field-weighted; when to use, examples. |
 | [sorting-algorithms](sorting-algorithms.md) | [sorting-algorithms.ts](../src/algorithms/sorting-algorithms.ts) | Bubble, insertion, selection, merge, quick, heap; complexity; when to use. |
 | [sorting-data-generator](sorting-data-generator.md) | [generate-sorting-data.js](../src/algorithms/generate-sorting-data.js) | Seeded test data for sorting correctness and perf tests. |
+
+### Interview prep
+
+| Doc | Description |
+|-----|-------------|
+| [Interview talking points](interview-talking-points.md) | FAQ-style answers: when to use which pattern (pagination, rate limit, cache, auth, etc.). |
+
+### Reviews / supplementary
+
+| Doc | Description |
+|-----|-------------|
+| [TypeScript advanced types review](typescript-advanced-types-review.md) | Review of `src/` for generics, utility types, type guards, and type safety. |

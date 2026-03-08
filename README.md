@@ -80,17 +80,17 @@ npm run build:all
 **From npm:**
 
 ```bash
-npm install api-patterns-sandbox
-cd node_modules/api-patterns-sandbox
+npm install interview-patterns-sandbox
+cd node_modules/interview-patterns-sandbox
 npm install
 npm run test:all
 npm run build:all
 ```
 
 From repo root: `npm run <name>:dev` to run a system, `npm run <name>:test` to
-test it. See [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), and
-[.cursorrules](.cursorrules) for standards and commands. To contribute, see
-[CONTRIBUTING.md](CONTRIBUTING.md).
+test it. Example cURL commands: [examples/README.md](examples/README.md). See
+[AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), and [.cursorrules](.cursorrules)
+for standards and commands. To contribute, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -98,7 +98,8 @@ test it. See [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md), and
 
 Single Markdown files per project and per algorithm in **[docs/](docs/)** with
 technical concept, pros/cons, and lessons. Full index:
-[docs/README.md](docs/README.md).
+[docs/README.md](docs/README.md). For quick prep:
+[Interview talking points](docs/interview-talking-points.md) (FAQ-style answers).
 
 ### API projects
 
@@ -115,6 +116,7 @@ technical concept, pros/cons, and lessons. Full index:
 | [concurrency-parallel](docs/concurrency-parallel.md) | [concurrency-parallel](src/api/concurrency-parallel/README.md) | I/O vs CPU; limited concurrency; worker pool.                       |
 | [dependency-injection](docs/dependency-injection.md) | [dependency-injection](src/api/dependency-injection/README.md) | Singleton/scoped/transient; testing; circular deps.                 |
 | [api-scenarios](docs/api-scenarios.md)               | [api-scenarios](src/api/api-scenarios/README.md)               | Full API reference: CRUD, streaming, bulk, auth, OpenAPI.           |
+| (see project README)                                 | [nextjs-backend](src/api/nextjs-backend/README.md)             | Next.js API routes, Prisma, DI, CRUD.                               |
 
 ### Algorithms (src/algorithms)
 
@@ -290,6 +292,25 @@ easier testing.
 
 ---
 
+### [Next.js backend](src/api/nextjs-backend/README.md) — Port 3034
+
+**What:** Next.js app with API routes, Prisma, dependency injection (Inversify), CRUD, JWT, and env-based config.
+
+**When:** Reference for Next.js backend patterns, App Router API routes, and database-backed APIs.
+
+---
+
+### Related patterns
+
+- **Pagination** ↔ rate-limiter (quotas), api-scenarios (list endpoints).
+- **Rate limiter** ↔ caching (store counters), security (per-user limits).
+- **Caching** ↔ rate-limiter (storage), autocomplete (search cache), search-algorithms (index).
+- **Security** ↔ validation (input), api-scenarios / nextjs-backend (auth in APIs).
+- **Autocomplete** ↔ search-algorithms (ranking), caching (suggestion cache).
+- **Concurrency-parallel** ↔ rate-limiter (async checks), api-scenarios (bulk/streaming).
+
+---
+
 ## Project structure
 
 ```text
@@ -306,7 +327,8 @@ easier testing.
 │   │   ├── search-algorithms/
 │   │   ├── concurrency-parallel/
 │   │   ├── dependency-injection/
-│   │   └── api-scenarios/
+│   │   ├── api-scenarios/
+│   │   └── nextjs-backend/
 │   ├── algorithms/     # Shared algorithms (e.g. ranking: TF-IDF, BM25)
 │   └── config/         # Shared config utilities
 ├── __mocks__/
@@ -318,20 +340,28 @@ easier testing.
 
 ## Commands
 
-| Action                        | Command                                                    |
-| ----------------------------- | ---------------------------------------------------------- |
-| All tests                     | `npm run test:all`                                         |
-| One project                   | `npm run <name>:test`                                      |
-| Watch                         | `npm run <name>:test:watch`                                |
-| Coverage                      | `npm run <name>:test:coverage`                             |
-| Build                         | `npm run build:all` or `npm run <name>:build`              |
-| Dev                           | `npm run <name>:dev`                                       |
-| Redis (caching, rate-limiter) | `npm run <name>:redis:start` / `npm run <name>:redis:stop` |
+Project names: `api-scenarios`, `autocomplete`, `caching`, `concurrency-parallel`, `dependency-injection`, `nextjs-backend`, `pagination`, `rate-limiter`, `search-algorithms`, `security`, `validation`, `websocket`.
+
+<!-- markdownlint-disable MD060 -->
+| Action                        | Command                                                     |
+| ----------------------------- | ----------------------------------------------------------- |
+| All tests                     | `npm run test:all`                                          |
+| One project                   | `npm run <name>:test`                                       |
+| Watch                         | `npm run <name>:test:watch`                                 |
+| Coverage (one project)        | `npm run <name>:test:coverage`                              |
+| Coverage (all)                | `npm run test:coverage:all`                                 |
+| Build                         | `npm run build:all` or `npm run <name>:build`               |
+| Dev                           | `npm run <name>:dev`                                        |
+| Redis (caching, rate-limiter) | `npm run <name>:redis:start` / `npm run <name>:redis:stop`   |
+<!-- markdownlint-enable MD060 -->
 
 ## Stack
 
 TypeScript (strict), Fastify, Jest, Redis / ioredis-mock, tsx for dev. Versions
-in root and per-project `package.json`.
+in root and per-project `package.json`. The root `tsconfig.json` includes only a
+subset of projects; each API module may have its own tsconfig and is built via
+`npm run <name>:build`. Test coverage: global floor 70% (see `jest.config.js`);
+target for new/critical code is 95%+ (see [.cursorrules](.cursorrules)).
 
 [![CI](https://github.com/SkinnnyJay/interview-prep/actions/workflows/ci.yml/badge.svg)](https://github.com/SkinnnyJay/interview-prep/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
