@@ -37,13 +37,17 @@
     "docs",
     "README.md",
     "LICENSE",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
     "AGENTS.md",
     "CLAUDE.md",
+    ".env.sample",
     "jest.config.js",
     "tsconfig.json",
     "asset.png"
   ],
   "scripts": {
+    "prepublishOnly": "npm run test:all && npm run build:all",
     "test": "npm run test:all",
     "test:watch": "jest --watch --detectOpenHandles",
     "test:coverage": "jest --coverage --testTimeout=120000",
