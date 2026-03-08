@@ -28,6 +28,7 @@ module.exports = {
       collectCoverageFrom: ['src/**/*.ts', '!src/**/*.test.ts', '!src/**/*.d.ts'],
       coverageDirectory: 'coverage',
       coverageReporters: ['text', 'lcov'],
+      // Global floor: 70%. Target for new/critical code: 95%+ (see .cursorrules / AGENTS.md).
       coverageThreshold: {
         global: {
           statements: 70,
