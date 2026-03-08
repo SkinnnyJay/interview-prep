@@ -2,7 +2,7 @@
   <img src="asset.png" alt="Interview Patterns Sandbox" width="640" />
 </p>
 
-# Interview Patterns Sandbox
+<h1 align="center">Interview Patterns Sandbox</h1>
 
 Production-oriented API patterns and algorithms—implemented, tested, and documented for learning and interview prep.
 
