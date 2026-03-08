@@ -15,7 +15,7 @@ import {
 import { FastifyReply, FastifyRequest } from "fastify";
 import { UserRole, UserErrorCode } from "../constants";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 const jwtModule = require("jsonwebtoken") as typeof import("jsonwebtoken");
 const originalDecode = jwtModule.decode;
 const originalVerify = jwtModule.verify;

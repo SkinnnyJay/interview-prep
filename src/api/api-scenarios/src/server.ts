@@ -697,7 +697,7 @@ function registerApiRoutes(): void {
             url: fileUrl,
           },
         };
-      } catch (error) {
+      } catch {
         return reply.code(HttpStatus.INTERNAL_SERVER_ERROR).send({
           success: false,
           error: {

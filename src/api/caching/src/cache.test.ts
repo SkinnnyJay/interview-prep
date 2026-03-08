@@ -807,7 +807,8 @@ describe("🔄 Unified Cache Interface Functions", () => {
   });
 });
 
-// Performance and Edge Cases: disabled due to hanging (async/timeout). Track re-enable in CONTRIBUTING or an issue.
+// Skipped: Performance and Edge Cases can hang (async/timeout). See CONTRIBUTING.md § "Skipped tests / technical debt"
+// and https://github.com/SkinnnyJay/interview-prep/issues — re-enable when fixed (e.g. shorter runs, better cleanup).
 describe.skip("📊 Performance and Edge Cases", () => {
   describe("Large Dataset Handling", () => {
     it("should handle large number of cache operations", async () => {

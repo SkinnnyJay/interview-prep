@@ -127,7 +127,8 @@ const server: FastifyInstance = Fastify({
   },
 });
 
-server.register(swagger, {
+// Type assertion: @fastify/swagger and Fastify 5 generics mismatch (see FastifyInstance vs swaggerCSP)
+server.register(swagger as unknown as Parameters<FastifyInstance["register"]>[0], {
   openapi: {
     info: { title: "Autocomplete API", description: "REST autocomplete and admin", version: "1.0.0" },
     servers: [{ url: "http://localhost:3006", description: "Development" }],

@@ -356,7 +356,7 @@ export class SocketIOWebSocketServer implements WebSocketServer {
         }
 
         await this.manager.handleMessage(client.id, message);
-      } catch (error) {
+      } catch {
         socket.emit(MessageType.ERROR, {
           error: "Invalid message format",
           timestamp: Date.now(),

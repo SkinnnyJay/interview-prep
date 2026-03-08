@@ -148,7 +148,7 @@ export class AuthenticationManager {
       }
 
       return await this.validateCredentials({ username, password });
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.INVALID_BASIC_AUTH_HEADER,
@@ -194,7 +194,7 @@ export class AuthenticationManager {
         user: sanitizeUser(user),
         session,
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.SESSION_AUTH_FAILED,
@@ -256,7 +256,7 @@ export class AuthenticationManager {
         success: true,
         user: sanitizeUser(user),
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.API_KEY_AUTH_FAILED,
@@ -303,7 +303,7 @@ export class AuthenticationManager {
         success: true,
         user: sanitizeUser(user),
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.BEARER_TOKEN_AUTH_FAILED,
@@ -457,7 +457,7 @@ export class AuthenticationManager {
             error: AuthErrorMessage.UNSUPPORTED_AUTH_TYPE,
           };
       }
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.LOGOUT_FAILED,
@@ -487,7 +487,7 @@ export class AuthenticationManager {
         success: true,
         user: sanitizeUser(user),
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.CREDENTIAL_VALIDATION_FAILED,
@@ -625,7 +625,7 @@ export class AuthenticationManager {
           lastUsed: apiKeyInfo.lastUsed,
         },
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.API_KEY_CREATION_FAILED_MSG,
@@ -647,7 +647,7 @@ export class AuthenticationManager {
         success: false,
         error: AuthErrorMessage.API_KEY_NOT_FOUND_MSG,
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.API_KEY_REVOKE_FAILED_MSG,
@@ -714,7 +714,7 @@ export class AuthenticationManager {
         expiresIn: Math.floor(this.config.bearerTokenExpiresIn / 1000), // Convert to seconds
         scope: newBearerToken.scopes.join(" "),
       };
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: AuthErrorMessage.REFRESH_TOKEN_FAILED,

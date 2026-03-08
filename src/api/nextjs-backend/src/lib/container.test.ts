@@ -33,7 +33,7 @@ describe("dependency injection container", () => {
   });
 
   it("binds prisma and logger services", () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
     const { createContainer, TYPES } = require("./container");
 
     const testContainer = createContainer();
@@ -47,7 +47,7 @@ describe("dependency injection container", () => {
   });
 
   it("initializes global container and logs success", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
     const containerModule = require("./container");
 
     await containerModule.initializeContainer();
@@ -57,7 +57,7 @@ describe("dependency injection container", () => {
   });
 
   it("cleans up prisma connection", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
     const containerModule = require("./container");
 
     await containerModule.cleanupContainer();
@@ -66,7 +66,7 @@ describe("dependency injection container", () => {
   });
 
   it("resolves service using helper", () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires -- dynamic require for jest.resetModules()
     const { getService, TYPES } = require("./container");
 
     const logger = getService(TYPES.Logger);

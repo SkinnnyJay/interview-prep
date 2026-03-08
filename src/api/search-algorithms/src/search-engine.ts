@@ -494,7 +494,7 @@ export class SearchEngine {
           });
         }
       }
-    } catch (error) {
+    } catch {
       console.warn("Invalid regex pattern:", query);
       return [];
     }

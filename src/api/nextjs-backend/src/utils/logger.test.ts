@@ -45,6 +45,7 @@ describe("Logger", () => {
     errorMock.mockClear();
     warnMock.mockClear();
     debugMock.mockClear();
+    // eslint-disable-next-line @typescript-eslint/no-require-imports -- dynamic require for jest.resetModules()
     ({ Logger } = require("./logger"));
   });
 
