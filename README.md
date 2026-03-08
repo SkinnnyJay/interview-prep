@@ -4,10 +4,11 @@
 
 # Interview Patterns Sandbox
 
-A monorepo of production-oriented API patterns and algorithms for learning and
-experimentation. API systems live under `src/api/<name>/` (each with its own
-README, tests, and docs); shared algorithms (e.g. ranking: TF-IDF, BM25) live
-under `src/algorithms/`.
+Production-oriented API patterns and algorithms—implemented, tested, and documented for learning and interview prep.
+
+- **API systems** — Pagination, rate limiting, caching, auth, validation, WebSockets, autocomplete, search, concurrency, DI, and full API scenarios. Each lives in `src/api/<name>/` with its own README, tests, and OpenAPI.
+- **Algorithms** — Big-O demos, ranking (TF-IDF, BM25, cosine), and sorting (bubble → quick sort). Shared code in `src/algorithms/`.
+- **Run anything** — `npm run <name>:dev` to start a system, `npm run <name>:test` to test it; optional Redis for caching and rate-limiting.
 
 ## Table of contents
 
