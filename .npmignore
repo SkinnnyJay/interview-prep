@@ -1,0 +1,26 @@
+# Dependencies and lockfile (consumers install their own)
+node_modules/
+package-lock.json
+src/api/**/package-lock.json
+
+# Build artifacts (consumers run build themselves)
+dist/
+build/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Development and tooling
+scratchpad/
+.cursorrules
+.cursorignore
+.github/
+coverage/
+*.log
+.DS_Store
+
+# Avoid publishing nested node_modules from workspace
+**/node_modules/
