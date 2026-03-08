@@ -1,0 +1,300 @@
+// Prisma Schema for NextJS Backend Example
+// This schema demonstrates best practices for database design
+// with proper relationships, indexing, and data validation
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model with authentication and profile information
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String   // Hashed password
+  firstName String?
+  lastName  String?
+  avatar    String?
+  bio       String?
+  
+  // Authentication and security
+  emailVerified Boolean  @default(false)
+  isActive      Boolean  @default(true)
+  lastLoginAt   DateTime?
+  
+  // Role-based access control (String for SQLite; use USER, MODERATOR, ADMIN, SUPER_ADMIN)
+  role String @default("USER")
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationships
+  posts     Post[]
+  comments  Comment[]
+  likes     Like[]
+  followers Follow[] @relation("UserFollowers")
+  following Follow[] @relation("UserFollowing")
+  sessions  Session[]
+  
+  // Audit trail
+  createdPosts Post[] @relation("PostCreator")
+  
+  @@map("users")
+  @@index([email])
+  @@index([username])
+  @@index([createdAt])
+}
+
+// Post model for content management
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String
+  excerpt     String?
+  coverImage  String?
+  
+  // Content management (String for SQLite: DRAFT, PUBLISHED, ARCHIVED, DELETED)
+  status      String    @default("DRAFT")
+  publishedAt DateTime?
+  
+  // SEO and metadata (tags stored as JSON string for SQLite)
+  metaTitle       String?
+  metaDescription String?
+  tags            String   @default("[]") // JSON array string, e.g. ["tag1","tag2"]
+  
+  // Analytics
+  viewCount Int @default(0)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationships
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  creator  User   @relation("PostCreator", fields: [authorId], references: [id])
+  
+  comments Comment[]
+  likes    Like[]
+  
+  // Categories (many-to-many through PostCategory)
+  categories PostCategory[]
+  
+  @@map("posts")
+  @@index([authorId])
+  @@index([status])
+  @@index([publishedAt])
+  @@index([slug])
+  @@index([createdAt])
+}
+
+// Category model for content organization
+model Category {
+  id          String @id @default(cuid())
+  name        String @unique
+  slug        String @unique
+  description String?
+  color       String? // Hex color for UI
+  icon        String? // Icon identifier
+  
+  // Hierarchy support
+  parentId String?
+  parent   Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationships
+  posts PostCategory[]
+  
+  @@map("categories")
+  @@index([slug])
+  @@index([parentId])
+}
+
+// Junction table for Post-Category many-to-many relationship
+model PostCategory {
+  id String @id @default(cuid())
+  
+  postId     String
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@unique([postId, categoryId])
+  @@map("post_categories")
+}
+
+// Comment model for user engagement
+model Comment {
+  id      String @id @default(cuid())
+  content String
+  
+  // Comment threading
+  parentId String?
+  parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentReplies")
+  
+  // Moderation
+  isApproved Boolean @default(true)
+  isDeleted  Boolean @default(false)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationships
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  likes Like[]
+  
+  @@map("comments")
+  @@index([postId])
+  @@index([authorId])
+  @@index([parentId])
+  @@index([createdAt])
+}
+
+// Like model for engagement tracking
+model Like {
+  id String @id @default(cuid())
+  
+  // Polymorphic-like relationship (can like posts or comments)
+  postId    String?
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  commentId String?
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  
+  // User who liked
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  // Ensure user can only like once per item
+  @@unique([userId, postId])
+  @@unique([userId, commentId])
+  @@map("likes")
+  @@index([postId])
+  @@index([commentId])
+  @@index([userId])
+}
+
+// Follow model for user relationships
+model Follow {
+  id String @id @default(cuid())
+  
+  followerId String
+  follower   User   @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  
+  followingId String
+  following   User   @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  // Prevent self-following and duplicate follows
+  @@unique([followerId, followingId])
+  @@map("follows")
+  @@index([followerId])
+  @@index([followingId])
+}
+
+// Audit log for tracking important actions
+model AuditLog {
+  id String @id @default(cuid())
+  
+  // Action details
+  action      String // CREATE, UPDATE, DELETE, LOGIN, etc.
+  entityType  String // User, Post, Comment, etc.
+  entityId    String
+  
+  // User who performed the action
+  userId String?
+  userEmail String? // Store email in case user is deleted
+  
+  // Request details
+  ipAddress String?
+  userAgent String?
+  
+  // Change details (JSON string)
+  oldValues String? // JSON of old values
+  newValues String? // JSON of new values
+  
+  // Metadata
+  metadata String? // Additional context as JSON
+  
+  createdAt DateTime @default(now())
+  
+  @@map("audit_logs")
+  @@index([action])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Settings model for application configuration
+model Setting {
+  id String @id @default(cuid())
+  
+  key         String @unique
+  value       String
+  type        String  @default("STRING") // STRING, NUMBER, BOOLEAN, JSON, URL, EMAIL
+  description String?
+  
+  // Validation
+  isPublic    Boolean @default(false) // Can be accessed by frontend
+  isRequired  Boolean @default(false)
+  
+  // Metadata
+  category String? // Group related settings
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("settings")
+  @@index([key])
+  @@index([category])
+}
+
+// Session model for authentication (optional - can use JWT only)
+model Session {
+  id String @id @default(cuid())
+  
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  
+  // Session metadata
+  ipAddress String?
+  userAgent String?
+  isActive  Boolean @default(true)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relationship
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+  @@index([sessionToken])
+  @@index([userId])
+  @@index([expires])
+}

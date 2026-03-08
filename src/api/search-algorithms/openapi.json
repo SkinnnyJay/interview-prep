@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Search Algorithms API",
+    "description": "Search algorithm demos",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {}
+  },
+  "paths": {},
+  "servers": [
+    {
+      "url": "http://localhost:3005",
+      "description": "Development"
+    }
+  ]
+}

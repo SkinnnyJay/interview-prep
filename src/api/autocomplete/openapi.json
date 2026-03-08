@@ -1,0 +1,18 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Autocomplete API",
+    "description": "REST autocomplete and admin",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {}
+  },
+  "paths": {},
+  "servers": [
+    {
+      "url": "http://localhost:3006",
+      "description": "Development"
+    }
+  ]
+}

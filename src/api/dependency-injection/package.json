@@ -1,0 +1,75 @@
+{
+  "name": "dependency-injection-api",
+  "version": "1.0.0",
+  "description": "A comprehensive dependency injection system using Fastify patterns with service containers and lifecycle management",
+  "main": "../../../dist/api/dependency-injection/server.js",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "node ../../../dist/api/dependency-injection/server.js",
+    "build": "tsc",
+    "test": "jest src/di.test.ts --detectOpenHandles --testTimeout=90000",
+    "test:watch": "jest src/di.test.ts --watch",
+    "test:coverage": "jest src/di.test.ts --coverage --testTimeout=90000",
+    "test:integration": "jest src/integration.test.ts",
+    "clean": "rm -rf ../../../dist/api/dependency-injection",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix && npm run format",
+    "format": "prettier --write 'src/**/*.{ts,js,json}' '*.md'",
+    "format:check": "prettier --check 'src/**/*.{ts,js,json}' '*.md'",
+    "openapi": "npm run build && OPENAPI_GEN=1 node ../../../dist/api/dependency-injection/generate-openapi.js"
+  },
+  "keywords": [
+    "dependency-injection",
+    "di",
+    "ioc",
+    "fastify",
+    "typescript",
+    "service-container",
+    "lifecycle",
+    "patterns"
+  ],
+  "author": "Jonathan (https://github.com/SkinnnyJay)",
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^5.7.4",
+    "fastify-plugin": "^4.5.1",
+    "tsx": "^4.6.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "jest": "^29.7.0",
+    "pino-pretty": "^13.1.2",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.2"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.test.ts",
+      "!src/server.ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "useESM": false,
+          "tsconfig": {
+            "module": "CommonJS"
+          }
+        }
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

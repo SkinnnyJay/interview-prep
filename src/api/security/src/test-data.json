@@ -1,0 +1,129 @@
+{
+  "testUsers": [
+    {
+      "username": "testadmin",
+      "email": "testadmin@example.com",
+      "password": "admin123test",
+      "roles": ["admin"]
+    },
+    {
+      "username": "testuser",
+      "email": "testuser@example.com",
+      "password": "user123test",
+      "roles": ["user"]
+    },
+    {
+      "username": "testguest",
+      "email": "testguest@example.com",
+      "password": "guest123test",
+      "roles": ["guest"]
+    },
+    {
+      "username": "multiuser",
+      "email": "multi@example.com",
+      "password": "multi123test",
+      "roles": ["user", "admin"]
+    }
+  ],
+  "testContent": [
+    {
+      "id": "content-1",
+      "title": "Public Content",
+      "body": "This content is visible to all authenticated users",
+      "author": "system",
+      "visibility": "public"
+    },
+    {
+      "id": "content-2",
+      "title": "User Content",
+      "body": "This content was created by a regular user",
+      "author": "testuser",
+      "visibility": "public"
+    },
+    {
+      "id": "content-3",
+      "title": "Admin Content",
+      "body": "This content requires admin privileges to modify",
+      "author": "testadmin",
+      "visibility": "admin"
+    }
+  ],
+  "testSessions": [
+    {
+      "id": "session-1",
+      "userId": "user-1",
+      "token": "test-session-token-1",
+      "expiresAt": "2024-12-31T23:59:59.999Z"
+    },
+    {
+      "id": "session-2",
+      "userId": "user-2",
+      "token": "test-session-token-2",
+      "expiresAt": "2024-12-31T23:59:59.999Z"
+    }
+  ],
+  "authTestCases": [
+    {
+      "name": "Valid Basic Auth",
+      "method": "basic",
+      "credentials": "testuser:user123test",
+      "expectedResult": "success"
+    },
+    {
+      "name": "Invalid Basic Auth",
+      "method": "basic",
+      "credentials": "testuser:wrongpassword",
+      "expectedResult": "failure"
+    },
+    {
+      "name": "Valid Session Token",
+      "method": "session",
+      "token": "test-session-token-1",
+      "expectedResult": "success"
+    },
+    {
+      "name": "Invalid Session Token",
+      "method": "session",
+      "token": "invalid-session-token",
+      "expectedResult": "failure"
+    },
+    {
+      "name": "Valid JWT Login",
+      "method": "jwt",
+      "credentials": "testadmin:admin123test",
+      "expectedResult": "success"
+    }
+  ],
+  "permissionTestCases": [
+    {
+      "role": "admin",
+      "permission": "admin_access",
+      "expectedResult": true
+    },
+    {
+      "role": "admin",
+      "permission": "delete_user",
+      "expectedResult": true
+    },
+    {
+      "role": "user",
+      "permission": "read_content",
+      "expectedResult": true
+    },
+    {
+      "role": "user",
+      "permission": "admin_access",
+      "expectedResult": false
+    },
+    {
+      "role": "guest",
+      "permission": "read_content",
+      "expectedResult": true
+    },
+    {
+      "role": "guest",
+      "permission": "create_content",
+      "expectedResult": false
+    }
+  ]
+}

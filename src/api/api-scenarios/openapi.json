@@ -1,0 +1,555 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API Scenarios Documentation",
+    "description": "Comprehensive API examples demonstrating various patterns and scenarios",
+    "version": "1.0.0"
+  },
+  "definitions": {},
+  "paths": {
+    "/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Health check endpoint",
+        "tags": [
+          "Health"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "type": "string"
+                },
+                "uptime": {
+                  "type": "number"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "description": "System metrics endpoint",
+        "tags": [
+          "Health"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "post": {
+        "description": "Create a new user",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "email",
+                "password",
+                "firstName",
+                "lastName"
+              ],
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string",
+                  "minLength": 8
+                },
+                "firstName": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "lastName": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "admin",
+                    "manager",
+                    "user",
+                    "guest"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "Get users with advanced filtering and pagination",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "search"
+          },
+          {
+            "type": "string",
+            "enum": [
+              "admin",
+              "manager",
+              "user",
+              "guest"
+            ],
+            "required": false,
+            "in": "query",
+            "name": "role"
+          },
+          {
+            "type": "string",
+            "enum": [
+              "active",
+              "inactive",
+              "suspended",
+              "pending"
+            ],
+            "required": false,
+            "in": "query",
+            "name": "status"
+          },
+          {
+            "type": "integer",
+            "minimum": 1,
+            "required": false,
+            "in": "query",
+            "name": "page"
+          },
+          {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "required": false,
+            "in": "query",
+            "name": "limit"
+          },
+          {
+            "type": "string",
+            "required": false,
+            "in": "query",
+            "name": "sortBy"
+          },
+          {
+            "type": "string",
+            "enum": [
+              "asc",
+              "desc"
+            ],
+            "required": false,
+            "in": "query",
+            "name": "sortOrder"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "description": "Get user by ID",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "put": {
+        "description": "Update user",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "firstName": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "lastName": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "admin",
+                    "manager",
+                    "user",
+                    "guest"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "active",
+                    "inactive",
+                    "suspended",
+                    "pending"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete user (soft delete)",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}/change-password": {
+      "post": {
+        "description": "Change user password",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "currentPassword",
+                "newPassword",
+                "confirmPassword"
+              ],
+              "properties": {
+                "currentPassword": {
+                  "type": "string"
+                },
+                "newPassword": {
+                  "type": "string",
+                  "minLength": 8
+                },
+                "confirmPassword": {
+                  "type": "string",
+                  "minLength": 8
+                }
+              }
+            }
+          },
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}/avatar": {
+      "post": {
+        "description": "Upload user avatar",
+        "tags": [
+          "Users"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "type": "string",
+            "required": true,
+            "in": "path",
+            "name": "id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/events": {
+      "get": {
+        "description": "Server-Sent Events endpoint for one-way streaming",
+        "tags": [
+          "Streaming"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/files/upload": {
+      "post": {
+        "description": "Upload files with validation and processing",
+        "tags": [
+          "Files"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "filename": {
+                      "type": "string"
+                    },
+                    "size": {
+                      "type": "number"
+                    },
+                    "mimetype": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Default Response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/bulk": {
+      "post": {
+        "description": "Bulk user operations (create, update, delete)",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "operation",
+                "data"
+              ],
+              "properties": {
+                "operation": {
+                  "type": "string",
+                  "enum": [
+                    "create",
+                    "update",
+                    "delete"
+                  ]
+                },
+                "data": {
+                  "type": "array"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    }
+  },
+  "host": "localhost:3007",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json",
+    "multipart/form-data"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter: Bearer {token}"
+    }
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "User management endpoints"
+    },
+    {
+      "name": "Streaming",
+      "description": "Real-time streaming endpoints"
+    },
+    {
+      "name": "Files",
+      "description": "File upload and download endpoints"
+    },
+    {
+      "name": "Health",
+      "description": "Health monitoring endpoints"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "name": "security-api",
+  "version": "1.0.0",
+  "description": "A comprehensive authentication and authorization system with Basic Auth, Session Tokens, and JWT supporting role-based access control",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "test": "jest --detectOpenHandles --testTimeout=90000",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --testTimeout=90000",
+    "test:auth": "jest src/auth-methods.test.ts",
+    "test:roles": "jest src/roles.test.ts",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix && npm run format",
+    "format": "prettier --write 'src/**/*.{ts,js,json}' '*.md'",
+    "format:check": "prettier --check 'src/**/*.{ts,js,json}' '*.md'",
+    "clean": "rm -rf dist",
+    "openapi": "npm run build && JWT_SECRET=openapi-gen node ../../../dist/api/security/src/generate-openapi.js"
+  },
+  "keywords": [
+    "authentication",
+    "authorization",
+    "api",
+    "fastify",
+    "typescript",
+    "basic-auth",
+    "session-tokens",
+    "jwt",
+    "rbac",
+    "security"
+  ],
+  "author": "Jonathan (https://github.com/SkinnnyJay)",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/websocket": "^11.2.0",
+    "bcrypt": "^6.0.0",
+    "fastify": "^5.7.4",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/jest": "^29.5.8",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.9.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.4.0",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.test.ts",
+      "!src/server.ts"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "testTimeout": 30000
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

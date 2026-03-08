@@ -1,0 +1,58 @@
+{
+  "name": "websocket-api",
+  "version": "1.0.0",
+  "description": "A comprehensive WebSocket implementation with Fastify backend and React frontend examples",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx src/backend/server.ts",
+    "dev:frontend": "cd src/frontend && npm run dev",
+    "start": "node dist/backend/server.js",
+    "build": "tsc",
+    "build:frontend": "cd src/frontend && npm run build",
+    "test": "jest --config jest.config.js --detectOpenHandles --testTimeout=90000",
+    "test:integration": "jest --config jest.config.js --testPathPattern=connect-send-disconnect --detectOpenHandles --testTimeout=15000",
+    "test:watch": "jest --config jest.config.js --watch",
+    "test:coverage": "jest --config jest.config.js --coverage --testTimeout=90000",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix && npm run format",
+    "format": "prettier --write 'src/**/*.{ts,js,json}' '*.md'",
+    "format:check": "prettier --check 'src/**/*.{ts,js,json}' '*.md'",
+    "clean": "rm -rf dist",
+    "install:frontend": "cd src/frontend && npm install",
+    "setup": "npm install && npm run install:frontend"
+  },
+  "keywords": [
+    "websocket",
+    "api",
+    "fastify",
+    "react",
+    "socket.io",
+    "typescript",
+    "real-time",
+    "interview"
+  ],
+  "author": "Jonathan (https://github.com/SkinnnyJay)",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/websocket": "^11.2.0",
+    "fastify": "^5.7.4",
+    "socket.io": "^4.7.4",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.0",
+    "@types/uuid": "^9.0.7",
+    "@types/ws": "^8.5.9",
+    "caniuse-lite": "^1.0.30001745",
+    "dedent": "^0.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "tsx": "^4.4.0",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

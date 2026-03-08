@@ -1,0 +1,69 @@
+{
+  "name": "rate-limiter-api",
+  "version": "1.0.0",
+  "description": "A comprehensive rate limiting system with 6 different algorithms supporting Redis and in-memory storage",
+  "main": "../../../dist/api/rate-limiter/server.js",
+  "scripts": {
+    "dev": "tsx src/server.ts",
+    "start": "node ../../../dist/api/rate-limiter/server.js",
+    "build": "tsc",
+    "test": "jest --detectOpenHandles --testTimeout=90000",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --testTimeout=90000",
+    "test:comparison": "jest src/comparison-tests.ts",
+    "clean": "rm -rf ../../../dist/api/rate-limiter",
+    "redis:start": "docker run -d -p 6379:6379 --name redis-rate-limiter redis:alpine",
+    "redis:stop": "docker stop redis-rate-limiter && docker rm redis-rate-limiter",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix && npm run format",
+    "format": "prettier --write 'src/**/*.{ts,js,json}' '*.md'",
+    "format:check": "prettier --check 'src/**/*.{ts,js,json}' '*.md'",
+    "openapi": "npm run build && node ../../../dist/api/rate-limiter/generate-openapi.js"
+  },
+  "keywords": [
+    "rate-limiting",
+    "api",
+    "fastify",
+    "redis",
+    "typescript",
+    "sliding-window",
+    "fixed-window",
+    "token-bucket",
+    "ddos-protection"
+  ],
+  "author": "Jonathan (https://github.com/SkinnnyJay)",
+  "license": "MIT",
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/**/*.test.ts",
+      "!src/server.ts",
+      "!src/comparison-tests.ts"
+    ],
+    "transform": {
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "useESM": false,
+          "tsconfig": {
+            "module": "CommonJS"
+          }
+        }
+      ]
+    }
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
