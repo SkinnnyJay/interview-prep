@@ -21,12 +21,19 @@
     "validation",
     "websocket",
     "search",
+    "autocomplete",
     "concurrency",
     "dependency-injection",
     "interview",
+    "interview-prep",
     "learning",
     "fastify",
-    "typescript"
+    "typescript",
+    "openapi",
+    "algorithms",
+    "backend",
+    "rbac",
+    "jwt"
   ],
   "engines": {
     "node": ">=18.0.0"
