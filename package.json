@@ -204,7 +204,7 @@
     "websocket:test:watch": "cd src/api/websocket && npm run test:watch",
     "websocket:test:coverage": "cd src/api/websocket && npm run test:coverage",
     "websocket:clean": "cd src/api/websocket && npm run clean",
-    "install:all": "npm install",
+    "install:all": "npm install && ./scripts/install_subprojects.sh",
     "build:all": "tsc && npm run api-scenarios:build && npm run autocomplete:build && npm run caching:build && npm run concurrency-parallel:build && npm run dependency-injection:build && npm run nextjs-backend:build && npm run pagination:build && npm run rate-limiter:build && npm run search-algorithms:build && npm run security:build && npm run validation:build && npm run websocket:build",
     "dev:all": "echo 'Please run individual projects with their respective dev commands (e.g., npm run api-scenarios:dev)'",
     "test:all": "jest",

@@ -27,6 +27,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install subproject dependencies
+        run: chmod +x scripts/install_subprojects.sh && ./scripts/install_subprojects.sh
+
       - name: Lint
         run: npm run lint:all
 
