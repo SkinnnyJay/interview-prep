@@ -1,4 +1,5 @@
 // service-container.ts - Core dependency injection container implementation
+import crypto from "node:crypto";
 import {
   ServiceContainer,
   ScopedContainer,

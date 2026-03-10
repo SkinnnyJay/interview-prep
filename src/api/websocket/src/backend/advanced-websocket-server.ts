@@ -1,5 +1,6 @@
 // Advanced WebSocket Server with rate limiting, authentication, and advanced features
 
+import crypto from "node:crypto";
 import Fastify, { FastifyInstance } from "fastify";
 import websocket from "@fastify/websocket";
 import { WebSocketManager } from "./websocket-manager";

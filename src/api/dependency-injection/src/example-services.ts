@@ -1,4 +1,5 @@
 // example-services.ts - Example services demonstrating DI patterns
+import crypto from "node:crypto";
 import {
   Service,
   LoggerService,

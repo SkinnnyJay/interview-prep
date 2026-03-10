@@ -6,7 +6,7 @@
   "author": "Jonathan (https://github.com/SkinnnyJay)",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -p tsconfig.worker.json",
     "start": "node dist/server.js",
     "dev": "tsx src/server.ts",
     "test": "jest --config ../../../jest.config.js --detectOpenHandles --testTimeout=90000",
