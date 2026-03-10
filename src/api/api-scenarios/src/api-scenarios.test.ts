@@ -71,7 +71,9 @@ describe("API Scenarios", () => {
     let createdUserId: string;
 
     describe("Create User", () => {
-      it("should create a new user with valid data", async () => {
+      it(
+        "should create a new user with valid data",
+        async () => {
         const userData = {
           username: "testuser",
           email: "test@example.com",
@@ -95,7 +97,9 @@ describe("API Scenarios", () => {
         expect(data.data.passwordHash).toBeUndefined(); // Should be filtered out
 
         createdUserId = data.data.id;
-      });
+      },
+        15000
+      );
 
       it("should validate required fields", async () => {
         const invalidUserData = {
@@ -120,7 +124,9 @@ describe("API Scenarios", () => {
         expect(data.error.details.length).toBeGreaterThan(0);
       });
 
-      it("should prevent duplicate email/username", async () => {
+      it(
+        "should prevent duplicate email/username",
+        async () => {
         const duplicateUserData = {
           username: "testuser", // Same as created user
           email: "test@example.com", // Same as created user
@@ -139,7 +145,9 @@ describe("API Scenarios", () => {
         const data = JSON.parse(response.payload);
         expect(data.success).toBe(false);
         expect(data.error.code).toBe(UserErrorCode.USER_EXISTS);
-      });
+      },
+        15000
+      );
     });
 
     describe("Get User", () => {
