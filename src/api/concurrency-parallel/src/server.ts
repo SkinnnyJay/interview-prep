@@ -72,7 +72,7 @@ const server: FastifyInstance = Fastify({
   },
 });
 
-server.register(swagger, {
+server.register(swagger as unknown as Parameters<typeof server.register>[0], {
   openapi: {
     info: { title: "Concurrency & Parallel API", description: "Concurrency and parallelism examples", version: "1.0.0" },
     servers: [{ url: "http://localhost:3008", description: "Development" }],
