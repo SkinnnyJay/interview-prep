@@ -48,6 +48,7 @@ const isWorkerTask = (task: WorkerMessage): task is WorkerTask => {
 parentPort.on("message", async (task: WorkerMessage) => {
   if (task.type === "shutdown") {
     parentPort?.close();
+    process.exit(0);
     return;
   }
 

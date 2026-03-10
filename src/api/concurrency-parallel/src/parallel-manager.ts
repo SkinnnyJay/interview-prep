@@ -41,6 +41,7 @@ export class ParallelManager {
   private startTime: number = 0;
   private workerIndex = 0; // Round-robin worker assignment
   private pendingTaskHandlers = new Map<string, (message: WorkerResult) => void>(); // Task-specific handlers
+  private isShuttingDown = false;
 
   constructor(config: ParallelConfig) {
     this.config = {
@@ -139,6 +140,7 @@ export class ParallelManager {
 
       worker.once("message", (message: WorkerResult & { type?: string }) => {
         if (message && message.type === "ready") {
+          if (this.isShuttingDown) return;
           clearInitTimeout();
           removeListeners();
           console.warn(`👷 Worker ${workerId} ready`);
@@ -345,6 +347,7 @@ export class ParallelManager {
    * Important: Always call this when done to prevent memory leaks
    */
   async cleanup(): Promise<void> {
+    this.isShuttingDown = true;
     console.warn(`🧹 Cleaning up ${this.workers.length} workers`);
 
     const terminationPromises = this.workers.map((worker, index) => {
@@ -372,6 +375,7 @@ export class ParallelManager {
 
     await Promise.all(terminationPromises);
     this.workers = [];
+    this.isShuttingDown = false;
     console.warn(`🎉 All workers cleaned up`);
   }
 
