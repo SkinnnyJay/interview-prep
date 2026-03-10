@@ -21,7 +21,7 @@ const createWidgetBodySchema = z.object({
 export async function createApp(): Promise<FastifyInstance> {
   const app = Fastify({ logger: true });
 
-  await app.register(swagger, {
+  await app.register(swagger as unknown as Parameters<typeof app.register>[0], {
     openapi: {
       info: { title: "Rate Limiter API", description: "Rate-limited widget API", version: "1.0.0" },
       servers: [{ url: "http://localhost:3000", description: "Development" }],

@@ -847,7 +847,7 @@ export async function createTestServer(): Promise<FastifyInstance> {
   await app.register(cors, { origin: true, credentials: true });
   await app.register(multipart, { limits: { fileSize: MAX_FILE_SIZE_BYTES } });
   await app.register(websocket);
-  await app.register(swagger, {
+  await app.register(swagger as unknown as Parameters<typeof app.register>[0], {
     swagger: {
       info: {
         title: "API Scenarios Documentation",
@@ -1075,6 +1075,10 @@ export async function createTestServer(): Promise<FastifyInstance> {
         .code(HttpStatus.INTERNAL_SERVER_ERROR)
         .send({ success: false, error: { code: "UPLOAD_FAILED", message: "File upload failed" } });
     }
+  });
+
+  app.addHook("onClose", async () => {
+    await localStreamingService.shutdown();
   });
 
   return app;

@@ -30,7 +30,7 @@ const server: FastifyInstance = Fastify({
   },
 });
 
-server.register(swagger, {
+server.register(swagger as unknown as Parameters<typeof server.register>[0], {
   openapi: {
     info: { title: "Search Algorithms API", description: "Search algorithm demos", version: "1.0.0" },
     servers: [{ url: "http://localhost:3005", description: "Development" }],

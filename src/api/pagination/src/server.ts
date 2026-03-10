@@ -72,7 +72,7 @@ function sendValidationError(
 export async function createApp(): Promise<FastifyInstance> {
   const app = Fastify({ logger: true });
 
-  await app.register(swagger, {
+  await app.register(swagger as unknown as Parameters<typeof app.register>[0], {
     openapi: {
       info: { title: "Pagination API", description: "Page-based and offset-based pagination", version: "1.0.0" },
       servers: [{ url: "http://localhost:3001", description: "Development" }],
