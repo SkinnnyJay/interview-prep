@@ -154,14 +154,20 @@ export class ParallelManager {
     path: string;
     execArgv: string[];
   } {
+    // Prefer compiled worker.js (faster, no ts-node) - concurrency-parallel outputs to ./dist
+    const distWorkerPath = join(__dirname, "../dist/worker.js");
+    if (existsSync(distWorkerPath)) {
+      return { path: distWorkerPath, execArgv: [] };
+    }
+
+    const localJsPath = join(__dirname, "worker.js");
+    if (existsSync(localJsPath)) {
+      return { path: localJsPath, execArgv: [] };
+    }
+
     if (workerScript) {
       const execArgv = workerScript.endsWith(".ts") ? ["-r", "ts-node/register"] : [];
       return { path: workerScript, execArgv };
-    }
-
-    const jsPath = join(__dirname, "worker.js");
-    if (existsSync(jsPath)) {
-      return { path: jsPath, execArgv: [] };
     }
 
     const tsPath = join(__dirname, "worker.ts");

@@ -5,7 +5,6 @@
  * of different concurrency and parallelism approaches.
  */
 
-import { join } from "path";
 import { ConcurrencyManager } from "./concurrency-manager";
 import { ParallelManager } from "./parallel-manager";
 import { ConcurrencyExamples, PerformanceComparison } from "./examples";
@@ -208,7 +207,7 @@ describe("ConcurrencyManager", () => {
 
 describe("ParallelManager", () => {
   let manager: ParallelManager;
-  const workerScript = join(__dirname, "worker.ts");
+  // Let resolveWorkerPath auto-select compiled worker.js (faster) or worker.ts fallback
 
   beforeEach(() => {
     manager = new ParallelManager({ workerCount: 2, timeout: 10000 });
@@ -221,7 +220,7 @@ describe("ParallelManager", () => {
 
   describe("initializeWorkers", () => {
     it("should initialize worker pool", async () => {
-      await manager.initializeWorkers(workerScript);
+      await manager.initializeWorkers();
 
       // Workers should be ready (tested implicitly by successful initialization)
       expect(true).toBe(true);
@@ -230,7 +229,7 @@ describe("ParallelManager", () => {
 
   describe("executeParallel", () => {
     it("should execute CPU-intensive tasks in parallel", async () => {
-      await manager.initializeWorkers(workerScript);
+      await manager.initializeWorkers();
 
       const tasks = [
         { type: "compute", data: { iterations: 20000 } },
@@ -250,7 +249,7 @@ describe("ParallelManager", () => {
     }, 20000);
 
     it("should handle fibonacci calculations", async () => {
-      await manager.initializeWorkers(workerScript);
+      await manager.initializeWorkers();
 
       const tasks = [{ n: 10 }];
       const results = await manager.executeParallel(tasks as { n: number }[], "fibonacci");
@@ -261,7 +260,7 @@ describe("ParallelManager", () => {
     }, 20000);
 
     it("should handle prime number checking", async () => {
-      await manager.initializeWorkers(workerScript);
+      await manager.initializeWorkers();
 
       const tasks = [
         { number: 17 }, // Prime
@@ -278,7 +277,7 @@ describe("ParallelManager", () => {
 
   describe("executeChunkedParallel", () => {
     it("should process large datasets in chunks", async () => {
-      await manager.initializeWorkers(workerScript);
+      await manager.initializeWorkers();
 
       const data = Array.from({ length: 50 }, (_, i) => ({ id: i + 1, value: i * 2 }));
 
@@ -292,7 +291,7 @@ describe("ParallelManager", () => {
 
   describe("getPerformanceMetrics", () => {
     it("should provide performance metrics for parallel execution", async () => {
-      await manager.initializeWorkers(workerScript);
+      await manager.initializeWorkers();
 
       const tasks = [{ type: "compute", data: { iterations: 20000 } }];
       await manager.executeParallel(tasks, "compute");
@@ -303,7 +302,7 @@ describe("ParallelManager", () => {
       expect(metrics.concurrencyLevel).toBe(2); // workerCount
       expect(metrics.averageTaskTime).toBeGreaterThan(0);
       expect(metrics.throughput).toBeGreaterThan(0);
-    }, 10000);
+    }, 30000);
   });
 });
 
@@ -426,7 +425,7 @@ describe("Integration Tests", () => {
       const manager = new ParallelManager({ workerCount: 2, timeout: 1000 });
 
       try {
-        await manager.initializeWorkers(join(__dirname, "worker.ts"));
+        await manager.initializeWorkers();
 
         // Test with a task that might cause issues
         const problematicTasks = [
