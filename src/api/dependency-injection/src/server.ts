@@ -77,7 +77,7 @@ export async function createApp(): Promise<FastifyInstance> {
     requestIdHeader: "x-request-id",
   });
 
-  await app.register(swagger, {
+  await app.register(swagger as unknown as Parameters<typeof app.register>[0], {
     openapi: {
       info: { title: "Dependency Injection API", description: "DI container and patterns", version: "1.0.0" },
       servers: [{ url: "http://localhost:3004", description: "Development" }],
