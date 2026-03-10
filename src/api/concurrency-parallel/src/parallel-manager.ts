@@ -14,7 +14,7 @@
 
 import { Worker } from "worker_threads";
 import { cpus } from "os";
-import { join } from "path";
+import { join, resolve } from "path";
 import { existsSync } from "fs";
 import { TaskResult, ParallelConfig, PerformanceMetrics } from "./concurrency-types.js";
 import { ParallelDefaultConfig } from "./constants";
@@ -154,10 +154,14 @@ export class ParallelManager {
     path: string;
     execArgv: string[];
   } {
-    // Prefer compiled worker.js (faster, no ts-node) - concurrency-parallel outputs to ./dist
-    const distWorkerPath = join(__dirname, "../dist/worker.js");
-    if (existsSync(distWorkerPath)) {
-      return { path: distWorkerPath, execArgv: [] };
+    // Prefer compiled worker.js (faster, no ts-node) - use cwd for CI (ts-jest can change __dirname)
+    const distFromCwd = resolve(process.cwd(), "src/api/concurrency-parallel/dist/worker.js");
+    if (existsSync(distFromCwd)) {
+      return { path: distFromCwd, execArgv: [] };
+    }
+    const distFromDirname = join(__dirname, "../dist/worker.js");
+    if (existsSync(distFromDirname)) {
+      return { path: distFromDirname, execArgv: [] };
     }
 
     const localJsPath = join(__dirname, "worker.js");
