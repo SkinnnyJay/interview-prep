@@ -10,6 +10,6 @@ cd "$ROOT_DIR"
 
 for dir in src/api/*/; do
   if [ -f "${dir}package.json" ]; then
-    (cd "$dir" && npm install --no-audit --no-fund)
+    (cd "$dir" && npm install --no-audit --no-fund --legacy-peer-deps)
   fi
 done
