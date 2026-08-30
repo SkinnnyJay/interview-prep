@@ -419,11 +419,25 @@ describe("🔴 Redis Cache Implementations", () => {
     it("should handle TTL correctly", async () => {
       const ttl = 1000; // 1 second
 
-      await cache.set("key1", "value1", CacheStrategy.TTL_REDIS, ttl);
-      const result = await cache.get("key1", CacheStrategy.TTL_REDIS);
+      // Root cause of the intermittent failure (#15): MockRedisClient computes
+      // remaining TTL as `Math.floor((expiryTime - Date.now()) / 1000)`. With a
+      // free-running clock, any wall-clock time that elapses between set() and
+      // get() - trivial on a slow/contended CI runner - pushes the 1000ms TTL
+      // below the next second boundary, floors to 0, and the falsy check in
+      // RedisCache.get() (`resultArr[1] && ...`) then leaves `result.ttl`
+      // undefined. Freezing the clock for the duration of this test removes the
+      // race entirely: set() and get() observe the exact same timestamp, so the
+      // remaining TTL is always the full 1000ms and floors to a deterministic 1.
+      jest.useFakeTimers({ now: Date.now() });
+      try {
+        await cache.set("key1", "value1", CacheStrategy.TTL_REDIS, ttl);
+        const result = await cache.get("key1", CacheStrategy.TTL_REDIS);
 
-      expect(result.hit).toBe(true);
-      expect(result.ttl).toBeGreaterThan(0);
+        expect(result.hit).toBe(true);
+        expect(result.ttl).toBeGreaterThan(0);
+      } finally {
+        jest.useRealTimers();
+      }
     });
 
     it("should delete values correctly", async () => {
